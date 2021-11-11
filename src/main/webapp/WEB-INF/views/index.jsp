@@ -32,7 +32,7 @@
             <tbody>
             <c:forEach items="${posts}" var="post">
                 <tr>
-                    <td title="<c:out value="${post.desc}"/>">
+                    <td title="<c:out value="${post.description}"/>">
                         <a href='<c:url value="update?id=${post.id}"/>'>
                             <c:out value="${post.name}"/>
                         </a>

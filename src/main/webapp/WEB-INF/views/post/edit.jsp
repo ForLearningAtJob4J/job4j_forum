@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label>Описание:</label>
-                        <input type="text" class="form-control" id="desc" name="desc" value="${post.desc}">
+                        <input type="text" class="form-control" id="desc" name="desc" value="${post.description}">
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validate()">Сохранить</button>
                 </form>

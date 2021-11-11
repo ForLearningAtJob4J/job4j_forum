@@ -8,6 +8,7 @@ import ru.job4j.forum.model.Post;
 import ru.job4j.forum.repository.UserRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -19,14 +20,6 @@ public class ForumService {
     public ForumService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
-        this.postRepository.save(
-                Post.of("Как убить дракона?",
-                        "В последнее время слишком много драконов в городе и окрестностях.")
-        );
-        this.postRepository.save(
-                Post.of("Кто виноват?",
-                        "Издавна интересуют людей вопросы: Кто виноват, что делать и подобные.")
-        );
     }
 
     public void save(Post post) {
@@ -42,19 +35,14 @@ public class ForumService {
     }
 
     public List<Post> findAllPosts() {
-        return new ArrayList<>(postRepository.findAll());
+        return new ArrayList<>((ArrayList<Post>) postRepository.findAll());
     }
 
     public Post findPostById(int id) {
-        return postRepository.findById(id);
+        return postRepository.findById(id).orElse(null);
     }
 
     public User findUserById(int id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id).orElse(null);
     }
-
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail();
-    }
-
 }
