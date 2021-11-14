@@ -1,10 +1,6 @@
 package ru.job4j.forum.model;
 
 import javax.persistence.*;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.Objects;
 
 @Entity
@@ -14,31 +10,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String password;
+
     private String username;
 
-    private String passwordHash;
+    @ManyToOne
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 
     private boolean enabled;
-
-    public static User of(String username, String password) {
-        User user = new User();
-        user.username = username;
-        user.passwordHash = makeMD5(password);
-        user.enabled = true;
-        return user;
-    }
-
-    private static String makeMD5(String password) {
-        String ret = "ERRORERRORERROR";
-        try {
-            ret = Arrays.toString(
-                    MessageDigest.getInstance("MD5").digest(password.getBytes(StandardCharsets.UTF_8))
-            );
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
 
     public int getId() {
         return id;
@@ -49,11 +29,11 @@ public class User {
     }
 
     public String getPassword() {
-        return passwordHash;
+        return password;
     }
 
-    public void setPassword(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -62,6 +42,22 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -79,9 +75,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void setEnabled(boolean b) {
-        this.enabled = b;
     }
 }
