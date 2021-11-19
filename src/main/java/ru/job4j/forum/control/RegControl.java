@@ -8,33 +8,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.job4j.forum.model.Post;
 import ru.job4j.forum.model.User;
-import ru.job4j.forum.repository.AuthorityRepository;
-import ru.job4j.forum.repository.UserRepository;
+import ru.job4j.forum.service.ForumService;
 
 @Controller
 public class RegControl {
 
     private final PasswordEncoder encoder;
-    private final UserRepository users;
-    private final AuthorityRepository authorities;
+    private final ForumService forumService;
 
-    public RegControl(PasswordEncoder encoder, UserRepository users, AuthorityRepository authorities) {
+    public RegControl(PasswordEncoder encoder, ForumService forumService) {
         this.encoder = encoder;
-        this.users = users;
-        this.authorities = authorities;
+        this.forumService = forumService;
     }
 
     @PostMapping("/reg")
     public String save(@ModelAttribute User user) {
         user.setEnabled(true);
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setAuthority(authorities.findByAuthority("ROLE_USER"));
+        user.setAuthority(forumService.findByAuthority("ROLE_USER"));
         String path;
 
         try {
-            users.save(user);
+            forumService.save(user);
             path = "redirect:/login";
         } catch (DataIntegrityViolationException dive) {
             path = "redirect:/reg?error=true";
