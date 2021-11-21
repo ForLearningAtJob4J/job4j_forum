@@ -46,7 +46,7 @@ public class RegControlTest {
     @WithMockUser
     public void shouldReturnDefaultMessage() throws Exception {
         this.mockMvc.perform(post("/reg")
-                        .param("username","vasya")
+                        .param("username", "vasya")
                         .param("password", "passw"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
